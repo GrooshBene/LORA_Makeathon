@@ -4,12 +4,24 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
+var schema = mongoose.Schema;
 var app = express();
+var UserSchema = new schema({
+	_id : String,
+	thumbnail : String
+});
 
+mongoose.connect("mongodb://localhost:27017/lora", function(err){
+	if(err){
+		throw err;
+	}
+	console.log("DB Server Connect Success");
+});
+
+var User = mongoose.model('users', UserSchema);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -23,6 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+require('./routes/place.js')(app, User);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
