@@ -13,6 +13,11 @@ var UserSchema = new schema({
 	_id : String,
 	thumbnail : String
 });
+var CountSchema = new schema({
+	_id : String,
+	count : Number
+})
+
 
 mongoose.connect("mongodb://localhost:27017/lora", function(err){
 	if(err){
@@ -22,6 +27,7 @@ mongoose.connect("mongodb://localhost:27017/lora", function(err){
 });
 
 var User = mongoose.model('users', UserSchema);
+var Count = mongoose.model('counts', CountSchema);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -36,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
-require('./routes/place.js')(app, User);
+require('./routes/place.js')(app, User, Count);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
