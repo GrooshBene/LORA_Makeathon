@@ -20,6 +20,15 @@ function init(app, User){
 			res.send(200, photos);
 		})
 	})
+	app.post('/update/status/one', function(req, res){
+		res.send(200, {value : 1});
+	});
+
+	app.post('/update/status/two', function(req, res){
+		res.send(200, {value : 2});
+	});
+
+
 }
 
 
